@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Whitehouse</title>
+<meta name="theme-color" content="#1d4ed8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--bg:#eef4ff;--card:#fff;--tx:#0b2447;--mut:#5b7aa6;--bd:#d6e4fb;--pri:#1d4ed8;--on:#2563eb;--cash:#0284c7;--exp:#dc2626;--net:#1d4ed8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+body{background:var(--bg)}
+.app{max-width:520px;margin:0 auto;padding:0 14px 90px}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff;margin:0 -14px 14px;padding:16px;border-radius:0 0 22px 22px;box-shadow:0 6px 18px #1d4ed833;z-index:5;display:flex;justify-content:space-between;align-items:center}
+h1{margin:0;font-size:22px;letter-spacing:-.3px;color:#fff}
+h1 span{color:#bfdbfe}
+input,button{font:inherit;color:inherit}
+input{width:100%;padding:12px;border:1px solid var(--bd);border-radius:12px;background:var(--card);outline:none}
+input:focus{border-color:var(--pri)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px #1d4ed811}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stat{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px}
+.stat small{color:var(--mut);font-size:12px;display:block}
+.stat b{font-size:19px;display:block;margin-top:2px}
+.net{grid-column:1/-1;background:var(--pri);border-color:var(--pri);color:#fff}
+.net small{color:#ffffffcc}
+.seg{display:flex;gap:6px;margin-bottom:10px}
+.seg button{flex:1;padding:10px 4px;border:1px solid var(--bd);border-radius:12px;background:var(--bg);font-weight:600;font-size:14px}
+.seg button.a[data-t=online]{background:var(--on);color:#fff;border-color:var(--on)}
+.seg button.a[data-t=cash]{background:var(--cash);color:#fff;border-color:var(--cash)}
+.seg button.a[data-t=expense]{background:var(--exp);color:#fff;border-color:var(--exp)}
+.seg button.a[data-t=salary]{background:#d97706;color:#fff;border-color:#d97706}
+.row{display:flex;gap:8px;margin-bottom:10px}
+.btn{width:100%;padding:13px;border:0;border-radius:12px;background:var(--pri);color:#fff;font-weight:700;font-size:15px}
+.item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd)}
+.item:last-child{border:0}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.item .m{flex:1;min-width:0}
+.item .m div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .m small{color:var(--mut)}
+.x{border:0;background:none;color:var(--mut);font-size:20px;padding:4px 8px}
+.empty{color:var(--mut);text-align:center;padding:14px 0;font-size:14px}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:340px}
+th,td{padding:9px 6px;text-align:right;border-bottom:1px solid var(--bd)}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--mut);font-weight:600;font-size:12px}
+tr.tap{cursor:pointer}
+tfoot td{font-weight:700;border:0}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--bd);display:flex;overflow-x:auto;scrollbar-width:none;padding-bottom:env(safe-area-inset-bottom,0px);z-index:9}
+nav button{flex:1 0 auto;min-width:76px;padding:12px 0 10px;border:0;background:none;color:var(--mut);font-size:12px;font-weight:600}
+nav button.a{color:var(--pri)}
+nav button i{display:block;font-style:normal;font-size:20px}
+.view{display:none}.view.a{display:block}
+.link{background:none;border:0;color:var(--exp);font-size:13px;padding:8px 0}
+.c-on{color:var(--on)}.c-cash{color:var(--cash)}.c-exp{color:var(--exp)}
+select{width:100%;padding:12px;border:1px solid var(--bd);border-radius:12px;background:var(--card);outline:none;font:inherit;color:inherit}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:6px}
+.chips button{flex:none;padding:7px 12px;border:1px solid var(--bd);border-radius:20px;background:var(--card);font-size:13px;font-weight:600;color:var(--mut)}
+.chips button.a{background:var(--pri);border-color:var(--pri);color:#fff}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:30px;height:30px;border:1px solid var(--bd);border-radius:50%;background:var(--bg);font-size:18px;font-weight:700;color:var(--pri);line-height:1}
+.qty b{min-width:24px;text-align:center}
+.low{color:var(--exp)}
+a{color:var(--pri);text-decoration:none;font-weight:600}
+.call{background:var(--pri);color:#fff;padding:8px 14px;border-radius:10px;font-size:13px}
+.att{display:flex;gap:4px}
+.att button{width:38px;height:36px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);font-weight:700;font-size:13px;color:var(--mut)}
+.att button.on-P{background:#16a34a;border-color:#16a34a;color:#fff}
+.att button.on-H{background:#f59e0b;border-color:#f59e0b;color:#fff}
+.att button.on-A{background:var(--exp);border-color:var(--exp);color:#fff}
+nav::-webkit-scrollbar{display:none}
+h1 span{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#ffffff2e;margin-right:8px;font-size:18px;color:#fff}
+.hd{background:#ffffff26;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600}
+input,select{border-radius:14px}
+input:focus,select:focus{border-color:var(--pri);box-shadow:0 0 0 3px #2563eb22}
+.card{border-radius:20px;padding:16px;box-shadow:0 4px 16px #1d4ed811}
+.stat{border-radius:16px;box-shadow:0 2px 10px #1d4ed80d}
+.stat b{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
+.stat:has(.c-on){border-left:4px solid var(--on)}
+.stat:has(.c-cash){border-left:4px solid var(--cash)}
+.stat:has(.c-exp){border-left:4px solid var(--exp)}
+.net{background:linear-gradient(135deg,#1d4ed8,#3b82f6);border:0;box-shadow:0 10px 24px #1d4ed84d}
+.net b{font-size:28px}
+.btn{background:linear-gradient(135deg,#1d4ed8,#3b82f6);box-shadow:0 6px 16px #1d4ed84d;border-radius:14px}
+button{transition:transform .1s,opacity .1s}
+button:active{transform:scale(.97)}
+.seg{background:var(--bg);padding:4px;border-radius:16px;gap:4px}
+.seg button{border:0;background:transparent;border-radius:12px;color:var(--mut)}
+.item .dot{width:12px;height:12px}
+.x{width:32px;height:32px;border-radius:50%;padding:0;line-height:1}
+.x:active{background:#fee2e2;color:var(--exp)}
+.empty{padding:28px 0}
+tbody tr:nth-child(even){background:var(--bg)}
+tr.tap:active{background:#dbeafe}
+.link{border:1px solid var(--bd);border-radius:20px;padding:9px 18px;background:var(--card)}
+#clear{display:block;margin:10px auto 0}
+.view.a{animation:fi .25s ease}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+nav{box-shadow:0 -4px 20px #1d4ed814}
+nav button i{display:flex;align-items:center;justify-content:center;width:54px;height:30px;margin:0 auto 3px;border-radius:15px;font-size:0;transition:background .2s}
+nav button.a i{background:#dbeafe}
+textarea{width:100%;padding:12px;border:1px solid var(--bd);border-radius:14px;background:var(--card);outline:none;font:inherit;color:inherit;resize:vertical}
+textarea:focus{border-color:var(--pri);box-shadow:0 0 0 3px #2563eb22}
+.nmeta{display:flex;align-items:center;justify-content:space-between;margin-top:10px;color:var(--mut);font-size:12px}
+.pick{display:flex;justify-content:space-between;gap:8px;width:100%;text-align:left;padding:10px 12px;border:1px solid var(--bd);border-radius:12px;background:var(--bg);margin-bottom:6px;font-size:14px}
+button.call{border:0;font:inherit;font-size:13px;font-weight:600}
+nav button{min-width:0;flex:1}
+#subtabs button{flex:1;padding:9px 10px;font-size:14px}
+#subtabs:empty{display:none}
+.badge{background:#dbeafe;color:var(--pri);font-weight:800;font-size:12px;padding:2px 7px;border-radius:8px;margin-right:6px}
+.btn:disabled{opacity:.45;box-shadow:none}
+#list{background:none;border:0;box-shadow:none;padding:0}
+:root{--bg:#f3f6fb;--tx:#0f1f3d;--mut:#64779a;--bd:#e3e9f4;--pri:#1d4ed8;--on:#2563eb;--cash:#0f8a63;--exp:#d33a3f;--net:#1d4ed8}
+html,body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;font-size:15px}
+header{background:linear-gradient(135deg,#142f8c,#2563eb);box-shadow:0 8px 24px rgba(20,47,140,.22)}
+h1{font-size:19px;font-weight:700;letter-spacing:-.2px}
+.card{border:1px solid var(--bd);box-shadow:0 1px 2px rgba(15,31,61,.04),0 6px 16px rgba(15,31,61,.04)}
+.stat{border:1px solid var(--bd);box-shadow:0 1px 2px rgba(15,31,61,.04)}
+.stat small{text-transform:uppercase;letter-spacing:.05em;font-size:10.5px;font-weight:600}
+.stat b{font-size:19px;font-weight:700}
+.net{background:linear-gradient(135deg,#142f8c,#2563eb);box-shadow:0 10px 24px rgba(20,47,140,.28)}
+.net b{font-size:26px;letter-spacing:-.3px}
+input,select{height:46px;border-color:var(--bd);background:#fff;font-size:15px}
+input::placeholder,textarea::placeholder{color:#9aa9c4}
+.btn{height:48px;font-weight:600;letter-spacing:.2px;background:linear-gradient(135deg,#1a3fb8,#2563eb);box-shadow:0 6px 16px rgba(37,99,235,.28)}
+th{text-transform:uppercase;letter-spacing:.05em;font-size:10.5px;font-weight:700;padding:10px 6px}
+td{padding:11px 6px}
+tfoot td{border-top:2px solid var(--bd);font-weight:700}
+.item{padding:12px 0}
+.chips button{font-weight:600;padding:8px 14px}
+nav button{font-size:11px;letter-spacing:.02em}
+:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="app">
+<header><h1><span>⌂</span> Whitehouse</h1></header>
+<div class='chips' id='subtabs'></div>
+
+<section class="view a" id="v-today">
+  <div id='fxbanner'></div>
+  <input type="date" id="date" style="margin-bottom:12px">
+  <div class="grid">
+    <div class="stat"><small>Online</small><b class="c-on" id="s-on">₹0</b></div>
+    <div class="stat"><small>Cash</small><b class="c-cash" id="s-cash">₹0</b></div>
+    <div class="stat"><small>Expense</small><b class="c-exp" id="s-exp">₹0</b></div>
+    <div class="stat"><small>Total Income</small><b id="s-inc">₹0</b></div>
+    <div class="stat"><small>Cash Balance</small><b class="c-cash" id="s-cb">₹0</b></div>
+    <div class="stat"><small>Online Balance</small><b class="c-on" id="s-ob">₹0</b></div>
+    <div class="stat net"><small>Day Balance (Income − Expense)</small><b id="s-net">₹0</b></div>
+  </div>
+  <div class="card">
+    <div class="seg" id="seg">
+      <button data-t="online" class="a">Online</button>
+      <button data-t="cash">Cash</button>
+      <button data-t="expense">Expense</button>
+      <button data-t="salary">Salary</button>
+    </div>
+    <div class="row" id="srow" style="display:none"><select id="tstaff"></select></div>
+    <div class='chips' id='expchips' style='display:none'></div>
+    <div class='chips' id='srcrow' style='display:none'><small style='color:var(--mut);align-self:center;flex:none'>Paid from:</small><button data-s='cash'>Cash</button><button data-s='online'>Online</button></div>
+    <div class="row"><input type="number" id="amt" inputmode="decimal" placeholder="Amount ₹"></div>
+    <div class="row"><input type="text" id="note" placeholder="Note (optional)"></div>
+    <button class="btn" id="add">Add Entry</button>
+    <small id="dmsg" style="display:block;margin-top:10px;color:var(--exp);font-weight:600"></small>
+  </div>
+  <div class="card" id="list"></div>
+</section>
+
+<section class="view" id="v-days">
+  <div class='chips' id='vmode'><button data-m='month' class='a'>Monthly</button><button data-m='year'>Yearly</button></div>
+  <div id='mview'>
+  <input type="month" id="month" style="margin-bottom:12px">
+  <div class="grid" id="mstats"></div>
+  <div class="card scroll">
+    <table>
+      <thead><tr><th>Day</th><th>Online</th><th>Cash</th><th>Exp</th><th>Net</th></tr></thead>
+      <tbody id="tbody"></tbody>
+      <tfoot id="tfoot"></tfoot>
+    </table>
+  </div>
+  </div>
+  <div id='yview' style='display:none'>
+    <input type='number' id='year' inputmode='numeric' min='2000' style='margin-bottom:12px'>
+    <div class='grid' id='ystats'></div>
+    <div class='card scroll'>
+      <table><thead><tr><th>Month</th><th>Online</th><th>Cash</th><th>Exp</th><th>Net</th></tr></thead><tbody id='ybody'></tbody><tfoot id='yfoot'></tfoot></table>
+    </div>
+    <small style='color:var(--mut)'>Tap a month to open its day-by-day view.</small>
+  </div>
+  <button class="link" id="clear">Delete all data</button>
+</section>
+
+<section class='view' id='v-stock'>
+  <div class='grid'>
+    <div class='stat'><small>Total Pieces</small><b id='i-qty'>0</b></div>
+    <div class='stat'><small>Stock Value</small><b id='i-val'>₹0</b></div>
+  </div>
+  <div class='card'>
+    <small id='ncode' style='display:block;margin-bottom:8px;font-weight:700;color:var(--pri)'></small>
+    <div class='row'><input type='text' id='iname' placeholder='Item name (e.g. Red Silk Saree)'></div>
+    <div class='row'><select id='icat'><option>Saree</option><option>Top</option><option>Kurti</option><option>Dress</option><option>Leggings</option><option>Dupatta</option><option>Nighty</option><option>Other</option></select></div>
+    <div class='row'><input type='number' id='iqty' inputmode='numeric' placeholder='Qty'><input type='number' id='iprice' inputmode='decimal' placeholder='Price ₹ each'></div>
+    <div class='row'><input type='number' id='icost' inputmode='decimal' placeholder='Cost ₹ each (optional)'></div>
+    <button class='btn' id='iadd'>Add Item</button>
+    <small id='imsg' style='display:block;margin-top:10px;color:#16a34a;font-weight:600'></small>
+  </div>
+  <div class='chips' id='ichips'></div>
+  <div class='card' id='ilist'></div>
+</section>
+
+<section class='view' id='v-salary'>
+  <input type='month' id='smonth' style='margin-bottom:12px'>
+  <div class='grid'>
+    <div class='stat'><small>Total Salary</small><b id='sa-tot'>₹0</b></div>
+    <div class='stat'><small>Absent Cut</small><b class='c-exp' id='sa-cut'>₹0</b></div>
+    <div class='stat'><small>Paid</small><b class='c-cash' id='sa-paid'>₹0</b></div>
+    <div class='stat net'><small>Due this month</small><b id='sa-due'>₹0</b></div>
+  </div>
+  <div class='card' id='slist'></div>
+  <div class='card'>
+    <b>Add Staff</b>
+    <div class='row' style='margin-top:10px'><input type='text' id='sname' placeholder='Staff name'></div>
+    <div class='chips' id='stype'><button data-t='month' class='a'>Monthly salary</button><button data-t='day'>Per day salary</button></div>
+    <div class='row'><input type='number' id='ssal' inputmode='decimal' placeholder='Monthly salary ₹'></div>
+    <div class='row'><input type='tel' id='sphone' inputmode='tel' placeholder='Mobile number'></div>
+    <button class='btn' id='sadd'>Add Staff</button>
+  </div>
+  <div class='card' id='plist'></div>
+</section>
+
+<section class='view' id='v-att'>
+  <input type='date' id='adate' style='margin-bottom:12px'>
+  <div class='grid' style='grid-template-columns:repeat(3,1fr)'>
+    <div class='stat'><small>Present</small><b style='color:#16a34a' id='a-p'>0</b></div>
+    <div class='stat'><small>Half day</small><b style='color:#f59e0b' id='a-h'>0</b></div>
+    <div class='stat'><small>Absent</small><b class='c-exp' id='a-a'>0</b></div>
+  </div>
+  <div class='card' id='alist'></div>
+  <small id='amsg' style='display:block;color:var(--exp);font-weight:600;margin-top:-4px'></small>
+  <b style='display:block;margin:14px 2px 8px'>Month summary</b>
+  <div class='card scroll'><table><thead><tr><th>Staff</th><th>Present</th><th>Half</th><th>Absent</th></tr></thead><tbody id='asum'></tbody></table></div>
+  <small style='color:var(--mut)'>P = Present · H = Half day · A = Absent. Tap again to clear.</small>
+</section>
+
+<section class='view' id='v-contacts'>
+  <div class='card'>
+    <div class='row'><input type='text' id='cname' placeholder='Name (e.g. Ravi Water Supply)'></div>
+    <div class='row'><select id='ccat'><option>Water Can</option><option>Food</option><option>Supplier</option><option>Courier</option><option>Repair</option><option>Other</option></select></div>
+    <div class='row'><input type='tel' id='cphone' inputmode='tel' placeholder='Phone number'></div>
+    <button class='btn' id='cadd'>Add Contact</button>
+  </div>
+  <div class='chips' id='cchips'></div>
+  <div class='card' id='clist'></div>
+</section>
+
+<section class='view' id='v-notes'>
+  <div class='grid'>
+    <div class='stat'><small>Notes</small><b id='n-cnt'>0</b></div>
+    <div class='stat'><small>Extra Amount Total</small><b id='n-tot'>₹0</b></div>
+  </div>
+  <div class='card'>
+    <div class='row'><textarea id='ntext' rows='3' placeholder='Write something...'></textarea></div>
+    <div class='row'><input type='number' id='namt' inputmode='decimal' placeholder='Extra amount ₹ (optional)'></div>
+    <small style='display:block;color:var(--mut);margin:-4px 0 10px'>Note amounts are kept separate and do not affect Today or Per Day.</small>
+    <button class='btn' id='nadd'>Save Note</button>
+  </div>
+  <input type='text' id='nsearch' placeholder='Search notes' style='margin-bottom:12px'>
+  <div id='nlist'></div>
+</section>
+
+<section class='view' id='v-bill'>
+  <div class='card'>
+    <input type='text' id='bsearch' placeholder='Search item name or code (e.g. W001)'>
+    <div id='bres' style='margin-top:8px'></div>
+  </div>
+  <div class='card' id='bcart'></div>
+  <div class='card'>
+    <div class='row'><input type='text' id='bcust' placeholder='Customer name (optional)'></div>
+    <div class='row'><input type='tel' id='bphone' inputmode='tel' placeholder='Customer mobile (optional)'></div>
+    <div class='row'><input type='number' id='bdisc' inputmode='decimal' placeholder='Discount ₹ (optional)'></div>
+    <div class='chips' id='bmode'><button data-m='cash' class='a'>Cash</button><button data-m='online'>Online</button></div>
+    <div class='stat net' style='margin-bottom:12px'><small>Bill Total</small><b id='btot'>₹0</b></div>
+    <small id='bmsg' style='color:var(--exp);display:block;margin-bottom:8px'></small>
+    <button class='btn' id='bdone'>Complete Sale</button>
+  </div>
+  <b style='display:block;margin:6px 2px 8px'>Recent bills</b>
+  <div id='bhist'></div>
+</section>
+
+<section class='view' id='v-fixed'>
+  <div class='grid'>
+    <div class='stat'><small>This Month Total</small><b id='f-tot'>₹0</b></div>
+    <div class='stat'><small>Still Due</small><b class='c-exp' id='f-due'>₹0</b></div>
+  </div>
+  <div class='card' id='flist'></div>
+  <div class='card'>
+    <b>Add Fixed Expense</b>
+    <div class='chips' id='fchips' style='margin-top:10px'></div>
+    <div class='row'><input type='text' id='fname' placeholder='Or type a custom name'></div>
+    <div class='row'><input type='number' id='famt' inputmode='decimal' placeholder='Amount ₹ / month'><input type='number' id='fday' inputmode='numeric' placeholder='Due day (1-31)'></div>
+    <button class='btn' id='fadd'>Add</button>
+  </div>
+</section>
+
+<section class='view' id='v-left'>
+  <input type='month' id='lmonth' style='margin-bottom:12px'>
+  <div class='grid'>
+    <div class='stat' style='grid-column:1/-1'><small>Opening Balance (brought forward)</small><b id='l-open'>₹0</b></div>
+    <div class='stat'><small>Income</small><b id='l-inc'>₹0</b></div>
+    <div class='stat'><small>Expense</small><b class='c-exp' id='l-exp'>₹0</b></div>
+    <div class='stat' style='grid-column:1/-1'><small>Paid from Left (fixed + other payments)</small><b class='c-exp' id='l-paid'>₹0</b></div>
+    <div class='stat net'><small>Left Amount (month end)</small><b id='l-left'>₹0</b></div>
+  </div>
+  <div class='card'>
+    <b>Pay from Left Amount</b><small style='display:block;color:var(--mut);margin:2px 0 10px'>Reduces the left amount only. Not added to Today or Per Day.</small>
+    <div class='row'><input type='number' id='lpamt' inputmode='decimal' placeholder='Amount ₹'></div>
+    <div class='row'><input type='text' id='lpnote' placeholder='What for? (optional)'></div>
+    <button class='btn' id='lpadd'>Pay</button>
+    <div id='lplist' style='margin-top:10px'></div>
+  </div>
+  <div class='card scroll'><table><thead><tr><th>Day</th><th>Income</th><th>Expense</th><th>Paid</th><th>Left</th></tr></thead><tbody id='lbody'></tbody></table></div>
+  <small style='color:var(--mut)'>Left = opening + income − expense − payments, carried forward every day. Fixed payments are included.</small>
+</section>
+
+<section class='view' id='v-setup'>
+  <div class='card'>
+    <b>Shop details</b>
+    <div class='row' style='margin-top:10px'><input type='text' id='shname' placeholder='Shop name'></div>
+    <div class='row'><input type='text' id='shaddr' placeholder='Address (optional)'></div>
+    <div class='row'><input type='tel' id='shphone' inputmode='tel' placeholder='Shop phone (optional)'></div>
+    <div style='display:flex;align-items:center;gap:12px;margin-bottom:10px'>
+      <div id='shlogo' style='width:56px;height:56px;border-radius:14px;border:1px dashed var(--bd);display:grid;place-items:center;overflow:hidden;color:var(--mut);font-size:11px;flex:none'>Logo</div>
+      <input type='file' id='shfile' accept='image/*' style='height:auto;padding:8px'>
+    </div>
+    <button class='link' id='shrmlogo' style='margin-bottom:12px'>Remove logo</button>
+    <small style='color:var(--mut);display:block'>Theme colour</small>
+    <div class='chips' id='shcolors' style='margin-top:6px'></div>
+    <button class='btn' id='shsave'>Save Shop Details</button>
+  </div>
+  <div class='card'>
+    <b>Item categories</b><small style='display:block;color:var(--mut);margin:2px 0 10px'>Used in Stock. Tap a category to remove it.</small>
+    <div class='chips' id='catchips' style='flex-wrap:wrap;overflow:visible'></div>
+    <div class='row'><input type='text' id='catnew' placeholder='New category (e.g. Lehenga)'><button class='call' id='catadd' style='flex:none;height:46px'>Add</button></div>
+  </div>
+  <div class='card'>
+    <b>Staff</b>
+    <div id='shstaff' style='margin:8px 0'></div>
+    <button class='link' id='shgostaff'>Add or manage staff</button>
+  </div>
+</section>
+
+<section class="view" id="v-history">
+  <div class="row" style="margin-bottom:6px"><div style="flex:1"><small style="color:var(--mut)">Month</small><input type="month" id="hmonth"></div><div style="flex:1"><small style="color:var(--mut)">Date</small><input type="date" id="hdate"></div></div>
+  <div class='chips' id='htype'></div>
+  <div class='chips' id='hact'></div>
+  <div class="row" style="align-items:center;justify-content:space-between"><small id="hcount" style="color:var(--mut)"></small><button class="link" id="hreset" style="color:var(--pri)">Show all</button></div>
+  <div class="card" id="hlist"></div>
+</section>
+</div>
+
+<nav>
+  <button class="a" data-v="today"><i>＋</i>Today</button>
+  <button data-v="bill"><i>☰</i>Bill</button>
+  <button data-v="days"><i>▦</i>Per Day</button>
+  <button data-v="stock"><i>❖</i>Stock</button>
+  <button data-v="salary"><i>₹</i>Salary</button>
+  <button data-v="att"><i>✓</i>Attendance</button>
+  <button data-v="contacts"><i>☎</i>Contacts</button>
+  <button data-v="notes"><i>✎</i>Notes</button>
+  <button data-v="fixed"><i>⏰</i>Fixed</button>
+  <button data-v="history"><i>◷</i>History</button>
+</nav>
+
+<script>
+const KEY='whitehouse:v1';
+let data=[];
+try{data=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){data=[]}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}};
+let log=[];
+try{log=JSON.parse(localStorage.getItem(KEY+':log')||'[]')}catch(e){log=[]}
+const logAct=(a,e,note)=>{log.unshift({t:Date.now(),a,type:e&&e.type,amt:e&&e.amt,note:e?e.note:note,date:e&&e.date});if(log.length>500)log.length=500;try{localStorage.setItem(KEY+':log',JSON.stringify(log))}catch(x){}};
+const $=id=>document.getElementById(id);
+const ld=k=>{try{return JSON.parse(localStorage.getItem(KEY+':'+k)||'[]')}catch(e){return[]}};
+const sv=(k,v)=>{try{localStorage.setItem(KEY+':'+k,JSON.stringify(v))}catch(e){}};
+let inv=ld('inv'),staff=ld('staff'),pays=ld('pays');
+function nextCode(){let n=0;inv.forEach(i=>{const m=/^W(\d+)$/.exec(i.code||'');if(m)n=Math.max(n,+m[1])});return 'W'+String(n+1).padStart(3,'0')}
+inv.forEach(i=>{if(!i.code)i.code=nextCode()});sv('inv',inv);
+const CATS=['Saree','Top','Kurti','Dress','Leggings','Dupatta','Nighty','Other'];
+let icat='All';
+const uid=()=>Date.now()+Math.random().toString(36).slice(2,6);
+const logTxt=(a,txt)=>{log.unshift({t:Date.now(),a,note:txt});if(log.length>500)log.length=500;sv('log',log)};
+const inr=n=>(n<0?'-':'')+'₹'+Math.abs(Math.round(n*100)/100).toLocaleString('en-IN');
+const pad=n=>String(n).padStart(2,'0');
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+let type='online';
+$('date').value=today();
+$('month').value=today().slice(0,7);
+
+const sum=(arr,t)=>arr.filter(e=>e.type===t).reduce((a,e)=>a+e.amt,0);
+const label={online:'Online',cash:'Cash',expense:'Expense'};
+const color={online:'var(--on)',cash:'var(--cash)',expense:'var(--exp)'};
+
+function renderToday(){const _p=$('date').value<today();$('add').disabled=_p;$('dmsg').textContent=_p?'This day is closed. Past days are view-only.':'';renderFxBanner();
+  const d=$('date').value;
+  const es=data.filter(e=>e.date===d);
+  const on=sum(es,'online'),ca=sum(es,'cash'),ex=sum(es,'expense');
+  $('s-on').textContent=inr(on);$('s-cash').textContent=inr(ca);$('s-exp').textContent=inr(ex);
+  
+  $('s-inc').textContent=inr(on+ca);$('s-net').textContent=inr(on+ca-ex);
+  const ec=es.filter(e=>e.type==='expense'&&e.src!=='online').reduce((a,e)=>a+e.amt,0),eo=ex-ec;$('s-cb').textContent=inr(ca-ec);$('s-ob').textContent=inr(on-eo);
+  $('list').innerHTML=es.length?es.slice().reverse().map(e=>
+    `<div class="item"><span class="dot" style="background:${color[e.type]}"></span>
+    <div class="m"><div>${label[e.type]}${e.note?' · '+esc(e.note):''}</div></div>
+    <b style="color:${e.type==='expense'?'var(--exp)':'inherit'}">${e.type==='expense'?'−':''}${inr(e.amt)}</b>
+    <button class="x" data-id="${e.id}">×</button></div>`).join(''):'';renderTables(es);
+}
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+function renderDays(){if($('yview').style.display!=='none')renderYear();
+  const m=$('month').value||today().slice(0,7);
+  const [y,mo]=m.split('-').map(Number);
+  const dim=new Date(y,mo,0).getDate();
+  const now=today();
+  let upto=dim;
+  if(m===now.slice(0,7))upto=+now.slice(8);
+  else if(m>now.slice(0,7))upto=0;
+  let rows='',tOn=0,tCa=0,tEx=0,active=0;
+  for(let i=1;i<=dim;i++){
+    const ds=m+'-'+pad(i),es=data.filter(e=>e.date===ds);
+    if(!es.length)continue;
+    const on=sum(es,'online'),ca=sum(es,'cash'),ex=sum(es,'expense');
+    tOn+=on;tCa+=ca;tEx+=ex;active++;
+    rows+=`<tr class="tap" data-d="${ds}"><td>${i}</td><td>${inr(on)}</td><td>${inr(ca)}</td><td>${inr(ex)}</td><td><b>${inr(on+ca-ex)}</b></td></tr>`;
+  }
+  $('tbody').innerHTML=rows||'<tr><td colspan="5" class="empty">No data this month</td></tr>';
+  $('tfoot').innerHTML=`<tr><td>Total</td><td>${inr(tOn)}</td><td>${inr(tCa)}</td><td>${inr(tEx)}</td><td>${inr(tOn+tCa-tEx)}</td></tr>`;
+  const net=tOn+tCa-tEx,cd=Math.max(upto,1);
+  $('mstats').innerHTML=
+   `<div class="stat"><small>Income</small><b>${inr(tOn+tCa)}</b></div>
+    <div class="stat"><small>Expense</small><b class="c-exp">${inr(tEx)}</b></div>
+    <div class="stat"><small>Avg Income / Day</small><b>${inr((tOn+tCa)/cd)}</b></div>
+    <div class="stat"><small>Avg Expense / Day</small><b class="c-exp">${inr(tEx/cd)}</b></div>
+    <div class="stat net"><small>Net ${inr(net)} · Avg Net / Day (${cd} days)</small><b>${inr(net/cd)}</b></div>
+    <div class="stat" style="grid-column:1/-1"><small>Avg Net / Active Day (${active} days with entries)</small><b>${inr(active?net/active:0)}</b></div>`;
+}
+
+$('seg').onclick=e=>{const b=e.target.closest('button');if(!b)return;type=b.dataset.t;$('srow').style.display=type==='salary'?'':'none';$('srcrow').style.display=(type==='expense'||type==='salary')?'':'none';$('expchips').style.display=type==='expense'?'':'none';if(type==='expense')renderExpChips();fillStaff();
+  [...$('seg').children].forEach(x=>x.classList.toggle('a',x===b))};
+$('add').onclick=()=>{
+  const amt=parseFloat($('amt').value);
+  clamp('date',1);
+  if($('date').value<today())return;
+  if(!(amt>0)){$('amt').focus();return}
+  if((type==='expense'||type==='salary')&&!psrc){$('dmsg').textContent='Choose: paid from Cash or Online';return}
+  if(type==='salary'){
+    const s=staff.find(x=>x.id===$('tstaff').value);if(!s)return;
+    const date=$('date').value||today(),nt=$('note').value.trim(),pid=uid();
+    pays.push({id:pid,sid:s.id,sname:s.name,date,amt,note:nt});sv('pays',pays);
+    data.push({id:uid(),date,type:'expense',amt,note:'Salary: '+s.name+(nt?' - '+nt:''),src:psrc,pid});save();
+    logTxt('sal-pay','Paid '+inr(amt)+' to '+s.name+' (for '+date+')');
+    $('amt').value='';$('note').value='';resetSrc();renderToday();renderDays();renderSalary();renderHistory();return}
+  const ent={id:Date.now()+Math.random().toString(36).slice(2,6),date:$('date').value||today(),type,amt,note:$('note').value.trim(),src:type==='expense'?psrc:undefined};
+  data.push(ent);logAct('add',ent);
+  save();$('amt').value='';$('note').value='';resetSrc();renderToday();renderDays();renderHistory();
+};
+$('list').onclick=e=>{const b=e.target.closest('.x');if(!b)return;
+  const del=data.find(x=>x.id===b.dataset.id);if(del&&del.bid){undoBill(del.bid);return}
+  if(del)logAct('delete',del);
+  if(del&&del.pid){pays=pays.filter(x=>x.id!==del.pid);sv('pays',pays);renderSalary()}
+  data=data.filter(x=>x.id!==b.dataset.id);save();renderToday();renderDays();renderHistory()};
+$('date').onchange=()=>{clamp('date',1);renderToday()};
+$('month').onchange=()=>{clamp('month');renderDays()};
+$('tbody').onclick=e=>{const r=e.target.closest('tr[data-d]');if(!r)return;
+  $('date').value=r.dataset.d;renderToday();show('today')};
+$('clear').onclick=()=>{if(confirm('Delete ALL data (entries, bills, stock, staff, attendance, contacts, notes, fixed)? History is kept. This cannot be undone.')){logAct('clear',null,'everything');data=[];save();sales=[];pays=[];fpays=[];lpays=[];inv=[];staff=[];att={};con=[];notes=[];fixed=[];cart=[];['sales','pays','fpays','lpays','inv','staff','contacts','notes','fixed'].forEach(k=>sv(k,[]));try{localStorage.setItem(KEY+':att','{}')}catch(x){}renderToday();renderDays();renderHistory();renderBill();renderSalary();renderFixed();renderLeft();renderStock();renderAtt();renderContacts();renderNotes()}};
+$('hdate').onchange=()=>{clamp('hdate',1);renderHistory()};$('hmonth').onchange=()=>{clamp('hmonth');renderHistory()};
+$('hreset').onclick=()=>{$('hdate').value='';$('hmonth').value='';htp='All';hac='All';renderHistory()};
+$('htype').onclick=e=>{const b=e.target.closest('button');if(!b)return;htp=b.dataset.c;renderHistory()};
+$('hact').onclick=e=>{const b=e.target.closest('button');if(!b)return;hac=b.dataset.c;renderHistory()};
+let htp='All',hac='All';
+const HT=['All','Entries','Stock','Salary','Attendance','Contacts','Notes','Sales','Fixed','Left'],HA=['All','Added','Deleted','Updated'];
+const tOf=a=>/^inv/.test(a)?'Stock':/^sal/.test(a)?'Salary':/^att/.test(a)?'Attendance':/^con/.test(a)?'Contacts':/^note/.test(a)?'Notes':/^bill/.test(a)?'Sales':/^fix/.test(a)?'Fixed':/^left/.test(a)?'Left':'Entries';
+const aOf=a=>/^(add|inv-add|sal-staff|sal-pay|con-add|note-add|bill-add|fix-add|fix-paid|left-pay)$/.test(a)?'Added':/^(delete|clear|inv-del|sal-rem|sal-delpay|con-del|note-del|bill-del|fix-del|left-del)$/.test(a)?'Deleted':'Updated';
+function dkey(t){const d=new Date(t);return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function renderHistory(){
+  const fd=$('hdate').value,fm=$('hmonth').value;
+  const rows=log.filter(l=>{const k=dkey(l.t);return (!fd||k===fd)&&(!fm||k.slice(0,7)===fm)&&(htp==='All'||tOf(l.a)===htp)&&(hac==='All'||aOf(l.a)===hac)});
+  $('htype').innerHTML=HT.map(c=>`<button data-c='${c}' class='${c===htp?'a':''}'>${c}</button>`).join('');
+  $('hact').innerHTML=HA.map(c=>`<button data-c='${c}' class='${c===hac?'a':''}'>${c}</button>`).join('');
+  $('hcount').textContent=rows.length+' of '+log.length+' activities';
+  $('hlist').innerHTML=rows.length?rows.map(l=>{
+    const tm=new Date(l.t).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'});
+    if(/^(inv|sal|att|con|note|bill|fix|left)/.test(l.a))return `<div class='item'><span class='dot' style='background:${/del|rem/.test(l.a)?'var(--exp)':'var(--on)'}'></span><div class='m'><div>${esc(l.note)}</div><small>${tm}</small></div></div>`;
+    if(l.a==='clear')return `<div class="item"><span class="dot" style="background:var(--exp)"></span><div class="m"><div>Deleted all data${l.note?' ('+esc(l.note)+')':''}</div><small>${tm}</small></div></div>`;
+    const add=l.a==='add';
+    return `<div class="item"><span class="dot" style="background:${add?'var(--on)':'var(--exp)'}"></span><div class="m"><div>${add?'Added':'Deleted'} ${label[l.type]} ${inr(l.amt)}${l.note?' · '+esc(l.note):''}</div><small>${tm} · entry date ${l.date}</small></div></div>`}).join(''):'<div class="empty">No activity found</div>';
+}
+
+function clamp(id,full){const t=today(),m=full?t:t.slice(0,7);if($(id).value>m)$(id).value=m}
+function setMax(){const t=today();['date','hdate','adate'].forEach(i=>$(i).max=t);['month','hmonth','smonth','lmonth'].forEach(i=>$(i).max=t.slice(0,7))}
+function renderStock(){const _cv=$('icat').value;$('icat').innerHTML=catList.map(c=>`<option>${esc(c)}</option>`).join('');if(_cv)$('icat').value=_cv;$('ncode').textContent='Code for next item: '+nextCode();
+  $('ichips').innerHTML=['All',...catList].map(c=>`<button data-c='${c}' class='${c===icat?'a':''}'>${c}</button>`).join('');
+  $('i-qty').textContent=inv.reduce((a,i)=>a+i.qty,0);
+  $('i-val').textContent=inr(inv.reduce((a,i)=>a+i.qty*i.price,0));
+  const l=inv.filter(i=>icat==='All'||i.cat===icat);
+  $('ilist').innerHTML=l.length?l.map(i=>`<div class='item'><div class='m'><div><span class='badge'>${i.code}</span><b>${esc(i.name)}</b></div><small>${i.cat} · ${inr(i.price)} each</small></div><div class='qty'><button data-id='${i.id}' data-d='-1'>−</button><b class='${i.qty<=2?'low':''}'>${i.qty}</b><button data-id='${i.id}' data-d='1'>+</button></div><button class='x' data-id='${i.id}' data-del='1'>×</button></div>`).join(''):`<div class='empty'>No items</div>`;
+}
+$('ichips').onclick=e=>{const b=e.target.closest('button');if(!b)return;icat=b.dataset.c;renderStock()};
+$('iadd').onclick=()=>{const name=$('iname').value.trim(),qty=parseInt($('iqty').value),price=parseFloat($('iprice').value);
+  if(!name){$('iname').focus();return}
+  if(!(qty>=0)){$('iqty').focus();return}
+  if(!(price>=0)){$('iprice').focus();return}
+  const it={id:uid(),code:nextCode(),name,cat:$('icat').value||'Other',qty,price,cost:parseFloat($('icost').value)||0};inv.push(it);sv('inv',inv);
+  logTxt('inv-add','Added item: '+name+' ('+it.cat+', qty '+qty+', '+inr(price)+')');
+  $('imsg').textContent='Added '+it.code+' · '+name+' — write '+it.code+' on the sticker';
+  $('iname').value='';$('iqty').value='';$('iprice').value='';$('icost').value='';renderStock();renderHistory()};
+$('ilist').onclick=e=>{const b=e.target.closest('button');if(!b)return;const it=inv.find(x=>x.id===b.dataset.id);if(!it)return;
+  if(b.dataset.del){inv=inv.filter(x=>x!==it);logTxt('inv-del','Deleted item: '+it.name+' ('+it.cat+', qty '+it.qty+')')}
+  else{const n=Math.max(0,it.qty+ +b.dataset.d);if(n===it.qty)return;logTxt('inv-qty','Stock '+it.name+': '+it.qty+' → '+n);it.qty=n}
+  sv('inv',inv);renderStock();renderHistory()};
+
+function renderSalary(){
+  const m=$('smonth').value||today().slice(0,7);
+  const mp=pays.filter(p=>p.date.slice(0,7)===m);
+  let tot=0,paid=0,cut=0;const [yy,mm]=m.split('-').map(Number),dim=new Date(yy,mm,0).getDate();
+  $('slist').innerHTML=staff.length?staff.map(s=>{const p=mp.filter(x=>x.sid===s.id).reduce((a,x)=>a+x.amt,0);let ab=0,pr=0;Object.keys(att).forEach(k=>{if(k.slice(0,7)===m){const v=att[k][s.id];if(v==='A')ab+=1;else if(v==='H'){ab+=.5;pr+=.5}else if(v==='P')pr+=1}});const dly=s.type==='day',gross=dly?s.salary*pr:s.salary,c=dly?0:Math.round(s.salary/dim*ab*100)/100;tot+=gross;paid+=p;cut+=c;
+    return `<div class='item'><div class='m'><div><b>${esc(s.name)}</b></div><small>${dly?`${inr(s.salary)}/day · Worked ${pr}d = ${inr(gross)}`:`${inr(s.salary)}/mo${ab?` · Absent ${ab}d (−${inr(c)})`:''}`} · Paid ${inr(p)} · Due ${inr(gross-c-p)}</small>${s.phone?`<div><a href='tel:${esc(s.phone)}'>Call ${esc(s.phone)}</a></div>`:''}</div><button class='x' data-sid='${s.id}'>×</button></div>`}).join(''):`<div class='empty'>No staff added</div>`;
+  $('sa-tot').textContent=inr(tot);$('sa-cut').textContent=inr(cut);$('sa-paid').textContent=inr(paid);$('sa-due').textContent=inr(tot-cut-paid);
+  fillStaff();
+  
+  
+  $('plist').innerHTML=mp.length?'<b>Payments this month</b>'+mp.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(p=>`<div class='item'><span class='dot' style='background:var(--cash)'></span><div class='m'><div>${esc(p.sname)}${p.note?' · '+esc(p.note):''}</div><small>${p.date}</small></div><b>${inr(p.amt)}</b><button class='x' data-pid='${p.id}'>×</button></div>`).join(''):`<div class='empty'>No payments this month</div>`;
+}
+$('smonth').onchange=()=>{clamp('smonth');renderSalary()};
+$('sadd').onclick=()=>{const name=$('sname').value.trim(),salary=parseFloat($('ssal').value);
+  if(!name){$('sname').focus();return}
+  if(!(salary>0)){$('ssal').focus();return}
+  staff.push({id:uid(),name,salary,type:stype,phone:$('sphone').value.trim()});sv('staff',staff);logTxt('sal-staff','Added staff: '+name+' ('+inr(salary)+(stype==='day'?'/day':'/mo')+')');
+  $('sname').value='';$('ssal').value='';$('sphone').value='';renderSalary();renderHistory()};
+$('slist').onclick=e=>{const b=e.target.closest('.x');if(!b)return;const s=staff.find(x=>x.id===b.dataset.sid);if(!s)return;
+  staff=staff.filter(x=>x!==s);sv('staff',staff);logTxt('sal-rem','Removed staff: '+s.name);renderSalary();renderHistory()};
+$('plist').onclick=e=>{const b=e.target.closest('.x');if(!b)return;const p=pays.find(x=>x.id===b.dataset.pid);if(!p)return;
+  pays=pays.filter(x=>x!==p);sv('pays',pays);data=data.filter(x=>x.pid!==p.id);save();logTxt('sal-delpay','Deleted payment: '+inr(p.amt)+' to '+p.sname+' ('+p.date+')');renderSalary();renderToday();renderDays();renderHistory()};
+
+let att={};try{att=JSON.parse(localStorage.getItem(KEY+':att')||'{}')}catch(e){att={}}
+let con=ld('contacts'),cfil='All';
+const CCATS=['Water Can','Food','Supplier','Courier','Repair','Other'];
+const AL={P:'Present',H:'Half day',A:'Absent'};
+function renderAtt(){$('amsg').textContent=($('adate').value||today())<today()?'This day is closed. Past days are view-only.':'';
+  const d=$('adate').value||today(),day=att[d]||{},m=d.slice(0,7);
+  let p=0,h=0,a=0;
+  $('alist').innerHTML=staff.length?staff.map(s=>{const v=day[s.id];if(v==='P')p++;if(v==='H')h++;if(v==='A')a++;
+    return `<div class='item'><div class='m'><div><b>${esc(s.name)}</b></div></div><div class='att'>${['P','H','A'].map(k=>`<button data-s='${s.id}' data-v='${k}' class='${v===k?'on-'+k:''}'>${k}</button>`).join('')}</div></div>`}).join(''):`<div class='empty'>Add staff in Salary tab first</div>`;
+  $('a-p').textContent=p;$('a-h').textContent=h;$('a-a').textContent=a;
+  const keys=Object.keys(att).filter(k=>k.startsWith(m));
+  $('asum').innerHTML=staff.length?staff.map(s=>{const c={P:0,H:0,A:0};keys.forEach(k=>{const v=att[k][s.id];if(v)c[v]++});
+    return `<tr><td>${esc(s.name)}</td><td>${c.P}</td><td>${c.H}</td><td>${c.A}</td></tr>`}).join(''):`<tr><td colspan='4' class='empty'>No staff</td></tr>`;
+}
+$('adate').onchange=()=>{clamp('adate',1);renderAtt()};
+$('alist').onclick=e=>{const b=e.target.closest('button');if(!b)return;const s=staff.find(x=>x.id===b.dataset.s);if(!s)return;
+  clamp('adate',1);const d=$('adate').value||today();if(d<today())return;att[d]=att[d]||{};
+  if(att[d][s.id]===b.dataset.v){delete att[d][s.id];logTxt('att-mark','Attendance '+d+': '+s.name+' cleared')}
+  else{att[d][s.id]=b.dataset.v;logTxt('att-mark','Attendance '+d+': '+s.name+' → '+AL[b.dataset.v])}
+  if(!Object.keys(att[d]).length)delete att[d];
+  try{localStorage.setItem(KEY+':att',JSON.stringify(att))}catch(x){}
+  renderAtt();renderSalary();renderHistory()};
+
+function renderContacts(){
+  $('cchips').innerHTML=['All',...CCATS].map(c=>`<button data-c='${c}' class='${c===cfil?'a':''}'>${c}</button>`).join('');
+  const l=con.filter(c=>cfil==='All'||c.cat===cfil);
+  $('clist').innerHTML=l.length?l.map(c=>`<div class='item'><div class='m'><div><b>${esc(c.name)}</b></div><small>${esc(c.cat)} · ${esc(c.phone)}</small></div><a class='call' href='tel:${esc(c.phone)}'>Call</a><button class='x' data-id='${c.id}'>×</button></div>`).join(''):`<div class='empty'>No contacts</div>`;
+}
+$('cchips').onclick=e=>{const b=e.target.closest('button');if(!b)return;cfil=b.dataset.c;renderContacts()};
+$('cadd').onclick=()=>{const name=$('cname').value.trim(),phone=$('cphone').value.trim(),cat=$('ccat').value;
+  if(!name){$('cname').focus();return}
+  if(!phone){$('cphone').focus();return}
+  con.push({id:uid(),name,cat,phone});sv('contacts',con);logTxt('con-add','Added contact: '+name+' ('+cat+', '+phone+')');
+  $('cname').value='';$('cphone').value='';renderContacts();renderHistory()};
+$('clist').onclick=e=>{const b=e.target.closest('.x');if(!b)return;const c=con.find(x=>x.id===b.dataset.id);if(!c)return;
+  con=con.filter(x=>x!==c);sv('contacts',con);logTxt('con-del','Deleted contact: '+c.name+' ('+c.cat+')');renderContacts();renderHistory()};
+
+function fillStaff(){const c=$('tstaff').value;$('tstaff').innerHTML=staff.length?staff.map(s=>`<option value='${s.id}'>${esc(s.name)}</option>`).join(''):`<option value=''>Add staff in Salary tab first</option>`;if(c)$('tstaff').value=c}
+function renderYear(){
+  const y=parseInt($('year').value)||new Date().getFullYear();
+  const names=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let rows='',tOn=0,tCa=0,tEx=0;
+  for(let i=1;i<=12;i++){const p=y+'-'+pad(i),es=data.filter(e=>e.date.slice(0,7)===p);if(!es.length)continue;
+    const on=sum(es,'online'),ca=sum(es,'cash'),ex=sum(es,'expense');tOn+=on;tCa+=ca;tEx+=ex;
+    rows+=`<tr class='tap' data-m='${p}'><td>${names[i-1]}</td><td>${inr(on)}</td><td>${inr(ca)}</td><td>${inr(ex)}</td><td><b>${inr(on+ca-ex)}</b></td></tr>`}
+  $('ybody').innerHTML=rows||`<tr><td colspan='5' class='empty'>No data this year</td></tr>`;
+  $('yfoot').innerHTML=`<tr><td>Total</td><td>${inr(tOn)}</td><td>${inr(tCa)}</td><td>${inr(tEx)}</td><td>${inr(tOn+tCa-tEx)}</td></tr>`;
+  const now=new Date(),cy=now.getFullYear(),net=tOn+tCa-tEx;
+  const leap=(y%4===0&&(y%100!==0||y%400===0));
+  const days=y<cy?(leap?366:365):y===cy?Math.floor((new Date(cy,now.getMonth(),now.getDate())-new Date(cy,0,1))/864e5)+1:1;
+  const mons=y<cy?12:y===cy?now.getMonth()+1:1;
+  $('ystats').innerHTML=
+   `<div class='stat'><small>Income</small><b>${inr(tOn+tCa)}</b></div>
+    <div class='stat'><small>Expense</small><b class='c-exp'>${inr(tEx)}</b></div>
+    <div class='stat'><small>Avg Income / Day</small><b>${inr((tOn+tCa)/days)}</b></div>
+    <div class='stat'><small>Avg Expense / Day</small><b class='c-exp'>${inr(tEx/days)}</b></div>
+    <div class='stat net'><small>Net ${inr(net)} · Avg Net / Day (${days} days)</small><b>${inr(net/days)}</b></div>
+    <div class='stat' style='grid-column:1/-1'><small>Avg Net / Month (${mons} months)</small><b>${inr(net/mons)}</b></div>`;
+}
+$('vmode').onclick=e=>{const b=e.target.closest('button');if(!b)return;
+  [...$('vmode').children].forEach(x=>x.classList.toggle('a',x===b));
+  const yr=b.dataset.m==='year';$('mview').style.display=yr?'none':'';$('yview').style.display=yr?'':'none';
+  if(yr)renderYear();else renderDays()};
+$('year').onchange=()=>{const cy=new Date().getFullYear();if(parseInt($('year').value)>cy)$('year').value=cy;renderYear()};
+$('ybody').onclick=e=>{const r=e.target.closest('tr[data-m]');if(!r)return;$('month').value=r.dataset.m;$('vmode').children[0].click()};
+
+let notes=ld('notes');
+const snip=t=>t.length>40?t.slice(0,40)+'...':t;
+function renderNotes(){
+  const q=$('nsearch').value.trim().toLowerCase();
+  const l=notes.filter(n=>!q||n.text.toLowerCase().includes(q));
+  $('n-cnt').textContent=notes.length;$('n-tot').textContent=inr(notes.reduce((a,n)=>a+(n.amt||0),0));
+  $('nlist').innerHTML=l.length?l.map(n=>`<div class='card'><div style='white-space:pre-wrap;word-break:break-word'>${esc(n.text)}</div><div class='nmeta'><span>${new Date(n.t).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'})}</span><span style='display:flex;align-items:center;gap:6px'>${n.amt?`<b style='color:var(--pri);font-size:15px'>${inr(n.amt)}</b>`:''}<button class='x' data-id='${n.id}'>×</button></span></div></div>`).join(''):`<div class='card'><div class='empty'>No notes found</div></div>`;
+}
+$('nsearch').oninput=renderNotes;
+$('nadd').onclick=()=>{let text=$('ntext').value.trim();const amt=parseFloat($('namt').value)||0;
+  if(!text&&!amt){$('ntext').focus();return}
+  if(!text)text='Extra amount';
+  notes.unshift({id:uid(),t:Date.now(),text,amt});sv('notes',notes);
+  logTxt('note-add','Added note: '+snip(text)+(amt?' ('+inr(amt)+')':''));
+  $('ntext').value='';$('namt').value='';renderNotes();renderHistory()};
+$('nlist').onclick=e=>{const b=e.target.closest('.x');if(!b)return;const n=notes.find(x=>x.id===b.dataset.id);if(!n)return;
+  notes=notes.filter(x=>x!==n);sv('notes',notes);logTxt('note-del','Deleted note: '+snip(n.text)+(n.amt?' ('+inr(n.amt)+')':''));renderNotes();renderHistory()};
+
+let sales=ld('sales'),cart=[],bmode='cash',fixed=ld('fixed');
+let fpays=ld('fpays');
+if(data.some(e=>e.fx)){data.filter(e=>e.fx).forEach(e=>{const [fid,mo]=e.fx.split('|');fpays.push({id:e.id,fid,mo,date:e.date,amt:e.amt})});data=data.filter(e=>!e.fx);save();sv('fpays',fpays)}
+const bnum=()=>sales.reduce((a,s)=>Math.max(a,s.no),0)+1;
+function cartTotals(){const sub=cart.reduce((a,c)=>{const i=inv.find(x=>x.id===c.iid);return a+(i?i.price*c.qty:0)},0);const d=Math.min(parseFloat($('bdisc').value)||0,sub);return{sub,d,tot:sub-d}}
+function renderBill(){
+  const q=$('bsearch').value.trim().toLowerCase();
+  const res=q?inv.filter(i=>i.qty>0&&(i.code.toLowerCase().includes(q)||i.name.toLowerCase().includes(q))).slice(0,6):[];
+  $('bres').innerHTML=res.map(i=>`<button class='pick' data-id='${i.id}'><span>${i.code} · ${esc(i.name)}</span><b>${inr(i.price)} · ${i.qty} left</b></button>`).join('')||(q?`<div class='empty' style='padding:10px'>No matching item in stock</div>`:'');
+  $('bcart').innerHTML=cart.length?cart.map(c=>{const i=inv.find(x=>x.id===c.iid);if(!i)return '';return `<div class='item'><div class='m'><div><b>${esc(i.name)}</b></div><small>${i.code} · ${inr(i.price)} each</small></div><div class='qty'><button data-id='${i.id}' data-d='-1'>−</button><b>${c.qty}</b><button data-id='${i.id}' data-d='1'>+</button></div><b>${inr(i.price*c.qty)}</b></div>`}).join(''):`<div class='empty'>Search and tap items to add to the bill</div>`;
+  $('btot').textContent=inr(cartTotals().tot);
+  $('bhist').innerHTML=sales.slice(0,15).map(s=>`<div class='card'><div class='nmeta' style='margin:0 0 6px'><span><b style='color:var(--tx)'>Bill #${s.no}</b> · ${s.date} · ${s.mode==='cash'?'Cash':'Online'}</span><button class='x' data-id='${s.id}'>×</button></div><div>${s.items.map(x=>esc(x.name)+' ×'+x.qty).join(', ')}</div><div class='nmeta'><span>${s.cust?esc(s.cust):''}</span><b style='color:var(--pri);font-size:16px'>${inr(s.total)}</b></div></div>`).join('')||`<div class='card'><div class='empty'>No bills yet</div></div>`;
+}
+$('bsearch').oninput=renderBill;
+$('bsearch').onkeydown=e=>{if(e.key==='Enter'){const b=$('bres').querySelector('.pick');if(b)b.click()}};
+$('bres').onclick=e=>{const b=e.target.closest('.pick');if(!b)return;const i=inv.find(x=>x.id===b.dataset.id);if(!i)return;
+  const c=cart.find(x=>x.iid===i.id);
+  if(c){if(c.qty<i.qty)c.qty++}else cart.push({iid:i.id,qty:1});
+  $('bsearch').value='';$('bmsg').textContent='';renderBill()};
+$('bcart').onclick=e=>{const b=e.target.closest('button');if(!b)return;const c=cart.find(x=>x.iid===b.dataset.id),i=inv.find(x=>x.id===b.dataset.id);if(!c||!i)return;
+  const n=c.qty+ +b.dataset.d;if(n>i.qty){$('bmsg').textContent='Only '+i.qty+' in stock for '+i.name;return}
+  if(n<=0)cart=cart.filter(x=>x!==c);else c.qty=n;renderBill()};
+$('bdisc').oninput=renderBill;
+$('bmode').onclick=e=>{const b=e.target.closest('button');if(!b)return;bmode=b.dataset.m;[...$('bmode').children].forEach(x=>x.classList.toggle('a',x===b))};
+$('bdone').onclick=()=>{
+  const lines=cart.map(c=>{const i=inv.find(x=>x.id===c.iid);return i?{iid:i.id,name:i.name,qty:c.qty,price:i.price,cost:i.cost||0}:null}).filter(Boolean);
+  if(!lines.length){$('bmsg').textContent='Add at least one item';return}
+  for(const l of lines){const i=inv.find(x=>x.id===l.iid);if(l.qty>i.qty){$('bmsg').textContent='Not enough stock: '+i.name;return}}
+  const t=cartTotals(),date=today(),no=bnum(),eid=uid(),bid=uid();
+  lines.forEach(l=>{inv.find(x=>x.id===l.iid).qty-=l.qty});sv('inv',inv);
+  data.push({id:eid,date,type:bmode==='cash'?'cash':'online',amt:t.tot,note:'Bill #'+no+' - '+lines.map(l=>l.name+' x'+l.qty).join(', '),bid});save();
+  sales.unshift({id:bid,no,date,t:Date.now(),items:lines,disc:t.d,total:t.tot,mode:bmode,cust:$('bcust').value.trim(),phone:$('bphone').value.trim(),eid});sv('sales',sales);
+  logTxt('bill-add','Bill #'+no+': '+inr(t.tot)+' ('+(bmode==='cash'?'Cash':'Online')+', '+lines.length+' items)');
+  cart=[];$('bcust').value='';$('bphone').value='';$('bdisc').value='';$('bmsg').textContent='';
+  renderBill();renderStock();renderToday();renderDays();renderHistory()};
+function undoBill(bid){const s=sales.find(x=>x.id===bid);if(!s)return;
+  s.items.forEach(l=>{const i=inv.find(x=>x.id===l.iid);if(i)i.qty+=l.qty});sv('inv',inv);
+  sales=sales.filter(x=>x!==s);sv('sales',sales);data=data.filter(x=>x.bid!==bid);save();
+  logTxt('bill-del','Deleted bill #'+s.no+': '+inr(s.total));
+  renderBill();renderStock();renderToday();renderDays();renderHistory()}
+$('bhist').onclick=e=>{const b=e.target.closest('.x');if(b)undoBill(b.dataset.id)};
+
+const fmonth=()=>today().slice(0,7);
+const fdue=f=>{const t=new Date(),dim=new Date(t.getFullYear(),t.getMonth()+1,0).getDate();return Math.min(f.day,dim)};
+function fxState(){return fixed.map(f=>{const d=fdue(f);return{f,d,left:d-new Date().getDate(),paid:fpays.some(p=>p.fid===f.id&&p.mo===fmonth())}})}
+function renderFxBanner(){const n=fxState().filter(s=>!s.paid&&s.left<=3);
+  $('fxbanner').innerHTML=n.length?`<div class='card' style='border-color:#f4d58d;border-left:4px solid #f59e0b;background:#fffaf0;cursor:pointer' data-go='fixed'><b>${n.length} fixed expense${n.length>1?'s':''} due soon</b><div style='font-size:13px;color:var(--mut);margin-top:4px'>${n.map(s=>esc(s.f.name)+(s.left<0?' (overdue)':s.left===0?' (today)':' ('+s.left+'d)')).join(', ')}</div></div>`:''}
+$('fxbanner').onclick=e=>{if(e.target.closest('[data-go]'))show('fixed')};
+function renderFixed(){
+  const base=['Rent','Electricity','EMI','Water Bill','Internet','Insurance','Shop Tax'],all=[...new Set([...base,...fixed.map(f=>f.name)])],cur=$('fname').value.trim().toLowerCase();
+  $('fchips').innerHTML=all.map(n=>`<button data-n='${esc(n).replace(/'/g,'&#39;')}' class='${cur===n.toLowerCase()?'a':''}'>${esc(n)}</button>`).join('');
+  const st=fxState();
+  $('f-tot').textContent=inr(fixed.reduce((a,f)=>a+f.amt,0));
+  $('f-due').textContent=inr(st.filter(s=>!s.paid).reduce((a,s)=>a+s.f.amt,0));
+  $('flist').innerHTML=st.length?st.slice().sort((a,b)=>a.d-b.d).map(s=>{const tag=s.paid?`<span style='color:#16a34a;font-weight:700'>Paid</span>`:s.left<0?`<span class='c-exp'><b>Overdue ${-s.left}d</b></span>`:s.left===0?`<span class='c-exp'><b>Due today</b></span>`:`<span>Due in ${s.left}d</span>`;
+    return `<div class='item'><div class='m'><div><b>${esc(s.f.name)}</b></div><small>${inr(s.f.amt)} · day ${s.d} · ${tag}</small></div>${s.paid?`<button class='x' data-undo='${s.f.id}' style='width:auto;height:30px;border-radius:10px;padding:0 10px;font-size:12px'>Undo</button>`:`<button class='call' data-pay='${s.f.id}'>Pay</button>`}<button class='x' data-del='${s.f.id}'>×</button></div>`}).join(''):`<div class='empty'>No fixed expenses yet</div>`;
+  renderFxBanner();
+}
+$('fadd').onclick=()=>{const name=$('fname').value.trim(),amt=parseFloat($('famt').value),day=parseInt($('fday').value);
+  if(!name){$('fname').focus();return}
+  if(!(amt>0)){$('famt').focus();return}
+  if(!(day>=1&&day<=31)){$('fday').focus();return}
+  fixed.push({id:uid(),name,amt,day});sv('fixed',fixed);logTxt('fix-add','Added fixed expense: '+name+' ('+inr(amt)+', day '+day+')');
+  $('fname').value='';$('famt').value='';$('fday').value='';renderFixed();renderHistory()};
+$('flist').onclick=e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.pay){const f=fixed.find(x=>x.id===b.dataset.pay);if(!f)return;
+    fpays.push({id:uid(),fid:f.id,mo:fmonth(),date:today(),amt:f.amt});sv('fpays',fpays);
+    logTxt('fix-paid','Paid fixed expense: '+f.name+' '+inr(f.amt));renderFixed();renderToday();renderDays();renderHistory()}
+  else if(b.dataset.undo){fpays=fpays.filter(p=>!(p.fid===b.dataset.undo&&p.mo===fmonth()));sv('fpays',fpays);logTxt('fix-undo','Undid fixed payment');renderFixed();renderHistory()}
+  else if(b.dataset.del){const f=fixed.find(x=>x.id===b.dataset.del);if(!f)return;
+    fixed=fixed.filter(x=>x!==f);sv('fixed',fixed);logTxt('fix-del','Deleted fixed expense: '+f.name);renderFixed();renderHistory()}};
+
+function renderTables(es){
+  const T=[['online','Online','var(--on)',''],['cash','Cash','var(--cash)',''],['expense','Expense','var(--exp)','−']];
+  $('list').innerHTML=T.map(([t,n,c,sg])=>{const r=es.filter(e=>e.type===t).slice().reverse();
+    return `<div class='card'><div class='nmeta' style='margin:0 0 6px'><b style='color:${c};font-size:15px'>${n} (${r.length})</b><b style='font-size:15px;color:var(--tx)'>${sg}${inr(r.reduce((a,e)=>a+e.amt,0))}</b></div><table style='min-width:0'><tbody>${r.length?r.map(e=>`<tr><td>${e.note?esc(e.note):'—'}${e.type==='expense'?` <small style='color:var(--mut)'>(${e.src==='online'?'Online':'Cash'})</small>`:''}</td><td style='white-space:nowrap'>${sg}${inr(e.amt)}</td><td style='width:38px;padding:4px'><button class='x' data-id='${e.id}'>×</button></td></tr>`).join(''):`<tr><td colspan='3' class='empty' style='text-align:center;padding:14px'>No entries</td></tr>`}</tbody></table></div>`}).join('');
+}
+
+$('fchips').onclick=e=>{const b=e.target.closest('button');if(!b)return;$('fname').value=b.dataset.n;renderFixed();$('famt').focus()};
+$('fname').oninput=renderFixed;
+
+function renderLeft(){
+  const m=$('lmonth').value||today().slice(0,7),[y,mo]=m.split('-').map(Number),dim=new Date(y,mo,0).getDate();
+  const sg=e=>e.type==='expense'?-e.amt:e.amt;
+  const allp=[...fpays.map(p=>({date:p.date,amt:p.amt})),...lpays];let bal=data.filter(e=>e.date<m+'-01').reduce((a,e)=>a+sg(e),0)-allp.filter(p=>p.date<m+'-01').reduce((a,p)=>a+p.amt,0);const op=bal;let inc=0,exp=0,pd=0,rows='';
+  for(let i=1;i<=dim;i++){const ds=m+'-'+pad(i),es=data.filter(e=>e.date===ds),ps=allp.filter(p=>p.date===ds);if(!es.length&&!ps.length)continue;
+    const di=es.filter(e=>e.type!=='expense').reduce((a,e)=>a+e.amt,0),de=sum(es,'expense'),dp=ps.reduce((a,p)=>a+p.amt,0);inc+=di;exp+=de;pd+=dp;bal+=di-de-dp;
+    rows+=`<tr><td>${i}</td><td>${inr(di)}</td><td>${inr(de)}</td><td>${inr(dp)}</td><td><b>${inr(bal)}</b></td></tr>`}
+  $('lbody').innerHTML=rows||`<tr><td colspan='5' class='empty'>No data this month</td></tr>`;
+  $('l-open').textContent=inr(op);$('l-inc').textContent=inr(inc);$('l-exp').textContent=inr(exp);$('l-paid').textContent=inr(pd);renderLp(m);$('l-left').textContent=inr(bal);
+}
+$('lmonth').onchange=()=>{clamp('lmonth');renderLeft()};
+
+let lpays=ld('lpays');
+function renderLp(m){
+  const l=[...lpays.filter(p=>p.date.slice(0,7)===m).map(p=>({...p,kind:'x'})),...fpays.filter(p=>p.date.slice(0,7)===m).map(p=>{const f=fixed.find(x=>x.id===p.fid);return{id:p.id,date:p.date,amt:p.amt,note:'Fixed: '+(f?f.name:'expense'),kind:'f'}})].sort((a,b)=>b.date.localeCompare(a.date));
+  $('lplist').innerHTML=l.map(p=>`<div class='item'><div class='m'><div>${esc(p.note||'Payment')}</div><small>${p.date}</small></div><b>${inr(p.amt)}</b>${p.kind==='x'?`<button class='x' data-id='${p.id}'>×</button>`:''}</div>`).join('');
+}
+$('lpadd').onclick=()=>{const amt=parseFloat($('lpamt').value);if(!(amt>0)){$('lpamt').focus();return}
+  const note=$('lpnote').value.trim();lpays.push({id:uid(),date:today(),amt,note});sv('lpays',lpays);
+  logTxt('left-pay','Paid from left amount: '+inr(amt)+(note?' - '+note:''));$('lpamt').value='';$('lpnote').value='';
+  $('lmonth').value=today().slice(0,7);renderLeft();renderHistory()};
+$('lplist').onclick=e=>{const b=e.target.closest('.x');if(!b)return;const p=lpays.find(x=>x.id===b.dataset.id);if(!p)return;
+  lpays=lpays.filter(x=>x!==p);sv('lpays',lpays);logTxt('left-del','Deleted left payment: '+inr(p.amt)+(p.note?' - '+p.note:''));renderLeft();renderHistory()};
+
+let stype='month';
+$('stype').onclick=e=>{const b=e.target.closest('button');if(!b)return;stype=b.dataset.t;[...$('stype').children].forEach(x=>x.classList.toggle('a',x===b));$('ssal').placeholder=stype==='day'?'Salary per day ₹':'Monthly salary ₹'};
+
+let psrc='';
+function resetSrc(){psrc='';if(type==='expense')renderExpChips();[...$('srcrow').querySelectorAll('button')].forEach(b=>b.classList.remove('a'))}
+$('srcrow').onclick=e=>{const b=e.target.closest('button');if(!b)return;psrc=b.dataset.s;[...$('srcrow').querySelectorAll('button')].forEach(x=>x.classList.toggle('a',x===b));$('dmsg').textContent=''};
+
+let ecats=ld('ecats');const EDEF=['Food','Tea','Water','Transport','Packing','Repair','Cleaning'];
+function renderExpChips(){const cur=$('note').value.trim().toLowerCase();
+  $('expchips').innerHTML=EDEF.map(n=>`<button data-n='${n}' class='${cur===n.toLowerCase()?'a':''}'>${n}</button>`).join('')+ecats.map(n=>`<button data-n='${esc(n).replace(/'/g,'&#39;')}' class='${cur===n.toLowerCase()?'a':''}'>${esc(n)} <span data-x='${esc(n).replace(/'/g,'&#39;')}'>×</span></button>`).join('')+`<button data-new='1'>+ New</button>`}
+$('expchips').onclick=e=>{const x=e.target.closest('[data-x]');
+  if(x){ecats=ecats.filter(n=>n!==x.dataset.x);sv('ecats',ecats);renderExpChips();return}
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.new){const n=$('note').value.trim();if(!n){$('dmsg').textContent='Type a name in Note, then tap + New to save it';return}
+    if(!EDEF.includes(n)&&!ecats.includes(n)){ecats.push(n);sv('ecats',ecats)}renderExpChips();return}
+  $('note').value=b.dataset.n;$('dmsg').textContent='';renderExpChips();$('amt').focus()};
+$('note').addEventListener('input',()=>{if(type==='expense')renderExpChips()});
+
+const COLORS=[['Blue','#1d4ed8','#142f8c','#2563eb'],['Green','#047857','#065f46','#10b981'],['Maroon','#be123c','#7f1d3a','#e11d48'],['Purple','#6d28d9','#4c1d95','#8b5cf6'],['Teal','#0f766e','#115e59','#14b8a6'],['Charcoal','#334155','#1e293b','#64748b']];
+let shop=ld('shop');if(Array.isArray(shop))shop={};shop=Object.assign({name:'Whitehouse',addr:'',phone:'',logo:'',ci:0},shop);
+let catList=ld('cats');if(!catList.length)catList=CATS.slice();
+const HOUSE=`<svg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='#fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M3 11l9-8 9 8'/><path d='M5 10v10h5v-6h4v6h5V10'/></svg>`;
+function applyShop(){
+  const c=COLORS[shop.ci]||COLORS[0];
+  document.documentElement.style.setProperty('--pri',c[1]);
+  let st=$('themecss');if(!st){st=document.createElement('style');st.id='themecss';document.head.appendChild(st)}
+  st.textContent=`header,.net,.btn{background:linear-gradient(135deg,${c[2]},${c[3]})!important}`;
+  document.title=shop.name;
+  document.querySelector('h1').innerHTML=(shop.logo?`<img src='${shop.logo}' style='width:32px;height:32px;border-radius:10px;object-fit:cover;vertical-align:middle;margin-right:8px;background:#fff'>`:`<span>${HOUSE}</span>`)+esc(shop.name);
+}
+function renderLogo(){$('shlogo').innerHTML=shop.logo?`<img src='${shop.logo}' style='width:100%;height:100%;object-fit:cover'>`:'Logo'}
+function renderColors(){$('shcolors').innerHTML=COLORS.map((c,i)=>`<button data-i='${i}' class='${i===shop.ci?'a':''}'><span style='display:inline-block;width:10px;height:10px;border-radius:50%;background:${c[3]};margin-right:6px'></span>${c[0]}</button>`).join('')}
+function renderCats(){$('catchips').innerHTML=catList.map(n=>`<button data-x='${esc(n).replace(/'/g,'&#39;')}'>${esc(n)} ×</button>`).join('')||`<small style='color:var(--mut)'>No categories</small>`}
+function fillSetup(){
+  $('shname').value=shop.name;$('shaddr').value=shop.addr;$('shphone').value=shop.phone;
+  renderLogo();renderColors();renderCats();
+  $('shstaff').innerHTML=staff.length?staff.map(s=>`<div class='item'><div class='m'><div>${esc(s.name)}</div></div><small>${inr(s.salary)}${s.type==='day'?'/day':'/mo'}</small></div>`).join(''):`<small style='color:var(--mut)'>No staff added yet</small>`;
+}
+$('shsave').onclick=()=>{shop.name=$('shname').value.trim()||'Whitehouse';shop.addr=$('shaddr').value.trim();shop.phone=$('shphone').value.trim();sv('shop',shop);applyShop();fillSetup()};
+$('shcolors').onclick=e=>{const b=e.target.closest('button');if(!b)return;shop.ci=+b.dataset.i;sv('shop',shop);applyShop();renderColors()};
+$('shfile').onchange=()=>{const f=$('shfile').files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,160/Math.max(im.width,im.height)),cv=document.createElement('canvas');cv.width=Math.round(im.width*k);cv.height=Math.round(im.height*k);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);shop.logo=cv.toDataURL('image/png');sv('shop',shop);applyShop();renderLogo()};im.src=r.result};r.readAsDataURL(f)};
+$('shrmlogo').onclick=()=>{shop.logo='';sv('shop',shop);applyShop();renderLogo()};
+$('catchips').onclick=e=>{const b=e.target.closest('button');if(!b)return;catList=catList.filter(n=>n!==b.dataset.x);sv('cats',catList);renderCats();renderStock()};
+$('catadd').onclick=()=>{const n=$('catnew').value.trim();if(!n)return;if(!catList.some(c=>c.toLowerCase()===n.toLowerCase())){catList.push(n);sv('cats',catList)}$('catnew').value='';renderCats();renderStock()};
+$('shgostaff').onclick=()=>show('salary');
+
+function show(v){
+  document.querySelectorAll('.view').forEach(x=>x.classList.toggle('a',x.id==='v-'+v));
+  document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('a',x.dataset.g===(GR.find(g=>g.v.includes(v))||{}).k));
+  scrollTo(0,0);setMax();renderSub(v);if(v==='att')renderAtt();if(v==='bill')renderBill();if(v==='fixed')renderFixed();if(v==='left')renderLeft();if(v==='setup')fillSetup();const ab=document.querySelector('nav button.a');if(ab)ab.scrollIntoView({inline:'center',block:'nearest'});
+}
+document.querySelector('nav').onclick=e=>{const b=e.target.closest('button');if(b)show(b.dataset.v)};
+$('smonth').value=today().slice(0,7);
+const IC={today:`<circle cx='12' cy='12' r='9'/><path d='M12 8v8M8 12h8'/>`,days:`<rect x='3' y='4' width='18' height='17' rx='3'/><path d='M3 9h18M8 2v4M16 2v4'/>`,stock:`<path d='M21 8l-9-5-9 5v8l9 5 9-5V8z'/><path d='M3 8l9 5 9-5M12 13v8'/>`,salary:`<rect x='3' y='6' width='18' height='14' rx='3'/><path d='M3 10h18M16 15h2'/>`,att:`<circle cx='12' cy='12' r='9'/><path d='M8 12.5l3 3 5-6'/>`,contacts:`<path d='M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z'/>`,bill:`<path d='M6 3h12v18l-3-2-3 2-3-2-3 2z'/><path d='M9 8h6M9 12h6'/>`,fixed:`<rect x='3' y='5' width='18' height='16' rx='3'/><path d='M3 10h18M12 14v3l2 1'/>`,notes:`<path d='M6 3h9l4 4v14H6z'/><path d='M9 12h7M9 16h5'/>`,history:`<circle cx='12' cy='12' r='9'/><path d='M12 7v5l3 2'/>`};
+document.querySelectorAll('nav button').forEach(b=>{const i=b.querySelector('i');if(i&&IC[b.dataset.v])i.innerHTML=`<svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>${IC[b.dataset.v]}</svg>`});
+document.querySelector('h1 span').innerHTML=`<svg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='#fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M3 11l9-8 9 8'/><path d='M5 10v10h5v-6h4v6h5V10'/></svg>`;
+document.querySelector('header').insertAdjacentHTML('beforeend',`<small class='hd'>${new Date().toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'})}</small>`);
+$('year').value=new Date().getFullYear();$('year').max=$('year').value;$('lmonth').value=today().slice(0,7);$('adate').value=today();setMax();renderToday();renderDays();renderHistory();renderStock();renderSalary();renderAtt();renderContacts();renderNotes();renderBill();renderFixed();
+const GR=[
+ {k:'today',n:'Today',v:['today','bill'],l:['Quick Entry','Bill'],ic:IC.today},
+ {k:'stock',n:'Stock',v:['stock'],l:['Items'],ic:IC.stock},
+ {k:'staff',n:'Staff',v:['salary','att'],l:['Salary','Attendance'],ic:IC.salary},
+ {k:'reports',n:'Reports',v:['days','left','history'],l:['Per Day','Left Amount','History'],ic:IC.days},
+ {k:'more',n:'More',v:['fixed','notes','contacts','setup'],l:['Fixed','Notes','Contacts','Setup'],ic:IC.notes}];
+const last={};
+function renderSub(v){const g=GR.find(x=>x.v.includes(v));if(g)last[g.k]=v;
+  $('subtabs').innerHTML=g&&g.v.length>1?g.v.map((k,i)=>`<button data-v='${k}' class='${k===v?'a':''}'>${g.l[i]}</button>`).join(''):''}
+const nv=document.querySelector('nav');
+nv.innerHTML=GR.map(g=>`<button data-g='${g.k}'><i><svg width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>${g.ic}</svg></i>${g.n}</button>`).join('');
+nv.onclick=e=>{const b=e.target.closest('button');if(!b)return;const g=GR.find(x=>x.k===b.dataset.g);if(g)show(last[g.k]||g.v[0])};
+$('subtabs').onclick=e=>{const b=e.target.closest('button');if(b)show(b.dataset.v)};
+applyShop();show('today');
+</script>
+</body>
+</html>
